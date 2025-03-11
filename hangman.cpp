@@ -11,30 +11,118 @@
 #include <string>    // std::string, std::getline
 #include <vector>    // std::vector
 
-std::vector<std::string> hint = std::vector<std::string>(8, "_");    // Note that hint is globally available; we want it to be like this for this project
-
-bool getHint(std::string secret, char guessLetter)
+std::vector<std::string> getHint(std::string secret, char guessLetter, std::vector<std::string> hint)
 {
-    // TODO: Write code that updates the hint based on the secret
-    // and based on the guess letter.  Use the hint from above.
 
-    // The procedure should return true if the letter was in the word,
-    // and return false if the letter was not in the word.
-    return false;
+    return hint;
 }
+
+void hangman(int lives)
+{
+    if (lives == 6) 
+    {
+        std::cout << "_________________" << std::endl
+        << " |        |      " << std::endl
+        << " |        |      " << std::endl
+        << " |              " << std::endl
+        << " |       " << "    " << std::endl
+        << " |              " << std::endl
+        << " |        " << "    " << std::endl
+        << " |               " << std::endl
+        << " |               " << std::endl
+        << " |               " << std::endl
+        << " |               " << std::endl; 
+    } else if (lives == 5) 
+    {
+        std::cout << "_________________" << std::endl
+        << " |        |      " << std::endl
+        << " |        |      " << std::endl
+        << " |        0      " << std::endl
+        << " |       " << "    " << std::endl
+        << " |              " << std::endl
+        << " |        " << "    " << std::endl
+        << " |               " << std::endl
+        << " |               " << std::endl
+        << " |               " << std::endl
+        << " |               " << std::endl;  
+    } else if (lives == 4) 
+    {
+        std::cout << "_________________" << std::endl
+        << " |        |      " << std::endl
+        << " |        |      " << std::endl
+        << " |        0      " << std::endl
+        << " |        |" << "    " << std::endl
+        << " |        |      " << std::endl
+        << " |        " << "    " << std::endl
+        << " |               " << std::endl
+        << " |               " << std::endl
+        << " |               " << std::endl
+        << " |               " << std::endl;  
+    } else if (lives == 3) 
+    {
+        std::cout << "_________________" << std::endl
+        << " |        |      " << std::endl
+        << " |        |      " << std::endl
+        << " |        0      " << std::endl
+        << " |       /|" << "    " << std::endl
+        << " |        |      " << std::endl
+        << " |        " << "    " << std::endl
+        << " |               " << std::endl
+        << " |               " << std::endl
+        << " |               " << std::endl
+        << " |               " << std::endl;  
+    } else if (lives == 2) 
+    {
+        std::cout << "_________________" << std::endl
+        << " |        |      " << std::endl
+        << " |        |      " << std::endl
+        << " |        0      " << std::endl
+        << " |       /|\\" << "\\    " << std::endl
+        << " |        |      " << std::endl
+        << " |          " << "     " << std::endl
+        << " |               " << std::endl
+        << " |               " << std::endl
+        << " |               " << std::endl
+        << " |               " << std::endl;  
+    } else if (lives == 1) 
+    {
+        std::cout << "_________________" << std::endl
+        << " |        |      " << std::endl
+        << " |        |      " << std::endl
+        << " |        0      " << std::endl
+        << " |       /|\\" << "\\    " << std::endl
+        << " |        |      " << std::endl
+        << " |       /  " << "     " << std::endl
+        << " |               " << std::endl
+        << " |               " << std::endl
+        << " |               " << std::endl
+        << " |               " << std::endl;  
+    } else if (lives == 0) 
+    {
+        std::cout << "_________________" << std::endl
+        << " |        |      " << std::endl
+        << " |        |      " << std::endl
+        << " |        0      " << std::endl
+        << " |       /|\\" << "\\    " << std::endl
+        << " |        |      " << std::endl
+        << " |       / \\" << "\\    " << std::endl
+        << " |               " << std::endl
+        << " |               " << std::endl
+        << " |               " << std::endl
+        << " |               " << std::endl;  
+    }
+}
+
 
 
 int main()
 {
-    srand(time(0)); // seeding the random number generator
-
-    // Creating a word bank
     std::vector<std::string> wordList = {
         "education",
         "solution",
         "mountain",
         "platinum",
-        "qlphabet",
+        "alphabet",
         "necklace",
         "elevator",
         "diamonds",
@@ -52,35 +140,24 @@ int main()
         "animals"
     };
     
-    // answer is a random word from the word bank
-    std::string answer = wordList[rand() % length(wordList)];
-    char letterGuess;
-    std::string wordGuess = "";
-    int lives = 10;
+    srand(time(0));
+    std::string theWord = wordList[rand() % length(wordList)];
+    std::vector<std::string> hint = std::vector<std::string>(theWord.length(), "_");
+    int lives = 6;
 
     std::cout << "Welcome to Hangman!\n";
+    hangman(lives);
+    display(hint); 
     
-    while (true)    // TODO: update this condition to run when the game should be played
+    while (true)
     {
-        std::cout << "\nEnter your guess: ";
+        char letterGuess;
+        std::cout << "\n> ";
         std::cin >> letterGuess;
-        
-        // TODO: Write code that displays the hint; you can either manually display or use the
-        // custom display procedure that I wrote for you
-        // TODO: Display hangman person if applicable; or you can display the number of lives left
-        if (getHint(answer, letterGuess) == false)
-        {
-            lives = lives - 1;
-            // TODO: Update hangman person if you are using a hangman person
-        }
-        
+        hint = getHint(theWord, letterGuess, hint);
+        hangman(lives);
+        display(hint); 
 
-        // TODO: Write code below that asks you whether you want to guess the word
-        // and allow the user to guess the word using the variable wordGuess
-        std::cout << "Would you like to guess the word (y/n)?\n";
-        
     }
-
-    std::cout << "Some winning or losing message here";
     return 0;
 }
