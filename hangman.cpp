@@ -156,6 +156,11 @@ bool endGame(bool won, int lives)
     return false;
 }
 
+bool alreadyGuessed(char guess, std::vector<char> letters)
+{
+    return false;
+}
+
 
 
 int main()
@@ -178,54 +183,69 @@ int main()
     std::cout << std::endl;
     display(hint); 
     std::cout << std::endl;
+    
 
     bool canGuess = true;
     
     while (!endGame(gameWin, lives))
     {
+        
+        
         char letterGuess;
+        std::vector<char> guessedLetters = std::vector<char>(26, "+");
         //std::cout << theWord <<std::endl;
         tempHint = hint;
-        std::cout << " \nGuess a letter:\n> ";
+        std::cout << "Already Guessed:\n";
+        display(guessedLetters);
+        std::cout << std::endl;
+        std::cout << "Guess a letter:\n> ";
         std::cin >> letterGuess;
-        if (letterGuess == '0' && canGuess == true)
+
+
+        if (!alreadyGuessed(letterGuess, guessedLetters))
         {
-            std::string guess;
-            std::cout << "What do you think the word is?\n> ";
-            std::cin >> guess;
-            if (guess == theWord)
+            if (letterGuess == '0' && canGuess == true)
+            {
+                std::string guess;
+                std::cout << "What do you think the word is?\n> ";
+                std::cin >> guess;
+                if (guess == theWord)
+                {
+                    gameWin = true;
+                }
+                canGuess = false;
+            
+            } else if (letterGuess == '0' && canGuess == false)
+            {
+                std::cout << "You must guess a letter before you can guess the word again\n";
+            } else if (alreadyGuessed(letterGuess))
+            {
+                std::cout << "You have already guessed this letter, try another.\n";
+            } else 
+            {
+                hint = getHint(wordButList, letterGuess, hint);
+                canGuess = true;
+                if (tempHint == hint)
+                {
+                    lives = lives - 1;
+                }
+            }
+            if (wordButList == hint)
             {
                 gameWin = true;
             }
-            canGuess = false;
-        
-        } else if (letterGuess == '0' && canGuess == false)
-        {
-            std::cout << "You must guess a letter before you can guess the word again";
-        } else 
-        {
-            hint = getHint(wordButList, letterGuess, hint);
-            canGuess = true;
-            if (tempHint == hint)
+            if (gameWin == true && (hint != wordButList))
             {
-                lives = lives - 1;
+                hint = wordButList;
             }
+            std::cout << "\n\n\n\n\n";
+            hangman(lives);
+            std::cout << std::endl;
+            display(hint); 
+            std::cout << std::endl;
+
         }
-        if (wordButList == hint)
-        {
-            gameWin = true;
-        }
-        if (gameWin == true && (hint != wordButList))
-        {
-            hint = wordButList;
-        }
-        std::cout << "\n\n\n\n\n";
-        hangman(lives);
-        std::cout << std::endl;
-        display(hint); 
-        std::cout << std::endl;
-    }
-    
+    }    
     if (lives == 0)
     {
         std::cout << "Sorry, you lost!\nThe word was '" << theWord <<  "'.\n";
