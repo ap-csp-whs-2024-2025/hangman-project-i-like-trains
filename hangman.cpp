@@ -35,9 +35,9 @@ std::vector<std::string> wordList = {
     "supercalifragilisticexpialidocious"
 };
 
-std::vector<std::string> getHint(std::vector<char> wordList, char letter, std::vector<std::string> hint)
+std::vector<char> getHint(std::vector<char> wordList, char letter, std::vector<char> hint)
 {
-    for (int index = 0; index < length(wordList), index++;)
+    for (int index = 0; index < length(wordList); index++)
     {
         if (wordList[index] == letter)
         {
@@ -163,8 +163,8 @@ int main()
 
     srand(time(0));
     std::string theWord = wordList[rand() % length(wordList)];
-    std::vector<std::string> hint = std::vector<std::string>(theWord.length(), "_");
-    std::vector<std::string> tempHint = hint;
+    std::vector<char> hint = std::vector<char>(theWord.length(), '_');
+    std::vector<char> tempHint = hint;
     int lives = 6;
     bool gameWin = false;
     std::vector<char> wordButList;
@@ -175,19 +175,20 @@ int main()
 
     std::cout << "Welcome to Hangman!\n(To guess the entire word, input 0)\n";
     hangman(lives);
+    std::cout << std::endl;
     display(hint); 
+    std::cout << std::endl;
 
     bool canGuess = true;
     
     while (!endGame(gameWin, lives))
     {
         char letterGuess;
-        char thisThing = '0';
-        std::cout << theWord <<std::endl;
+        //std::cout << theWord <<std::endl;
         tempHint = hint;
         std::cout << " \nGuess a letter:\n> ";
         std::cin >> letterGuess;
-        if (letterGuess == thisThing && canGuess == true)
+        if (letterGuess == '0' && canGuess == true)
         {
             std::string guess;
             std::cout << "What do you think the word is?\n> ";
@@ -198,7 +199,10 @@ int main()
             }
             canGuess = false;
         
-        } else
+        } else if (letterGuess == '0' && canGuess == false)
+        {
+            std::cout << "You must guess a letter before you can guess the word again";
+        } else 
         {
             hint = getHint(wordButList, letterGuess, hint);
             canGuess = true;
@@ -207,8 +211,19 @@ int main()
                 lives = lives - 1;
             }
         }
+        if (wordButList == hint)
+        {
+            gameWin = true;
+        }
+        if (gameWin == true && (hint != wordButList))
+        {
+            hint = wordButList;
+        }
+        std::cout << "\n\n\n\n\n";
         hangman(lives);
+        std::cout << std::endl;
         display(hint); 
+        std::cout << std::endl;
     }
     
     if (lives == 0)
