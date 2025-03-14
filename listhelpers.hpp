@@ -13,13 +13,12 @@
 template <typename T>
 void display(std::vector<T> const &v) {
   if (v.empty()) {
-    std::cout << "[]\n";
+    std::cout << "\n";
   } else {
-    std::cout << "[";
     for (int i = 0; i < v.size()-1; ++i) {
-      std::cout << v.at(i) << ", ";
+      std::cout << v.at(i) << " ";
     }
-    std::cout << v.back() << "]\n";
+    std::cout << v.back() << "\n";
   }
 }
 
