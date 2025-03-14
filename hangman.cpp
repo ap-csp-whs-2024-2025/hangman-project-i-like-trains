@@ -192,7 +192,7 @@ int main()
         
         
         char letterGuess;
-        std::vector<char> guessedLetters = std::vector<char>(26, "+");
+        std::vector<char> guessedLetters = std::vector<char>(26, '+');
         //std::cout << theWord <<std::endl;
         tempHint = hint;
         std::cout << "Already Guessed:\n";
@@ -218,7 +218,7 @@ int main()
             } else if (letterGuess == '0' && canGuess == false)
             {
                 std::cout << "You must guess a letter before you can guess the word again\n";
-            } else if (alreadyGuessed(letterGuess))
+            } else if (alreadyGuessed(letterGuess, guessedLetters))
             {
                 std::cout << "You have already guessed this letter, try another.\n";
             } else 
