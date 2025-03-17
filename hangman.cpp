@@ -204,7 +204,6 @@ int main()
         tempHint = hint;
         std::cout << "Already Guessed:\n";
         display(displayLetters);
-        display(guessedLetters);
         std::cout << std::endl;
         std::cout << "Guess a letter:\n> ";
         std::cin >> letterGuess;
