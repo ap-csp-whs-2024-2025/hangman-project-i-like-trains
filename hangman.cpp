@@ -158,6 +158,13 @@ bool endGame(bool won, int lives)
 
 bool alreadyGuessed(char guess, std::vector<char> letters)
 {
+    for (int index = 0; index < length(letters); index++)
+    {
+        if (letters[index] == guess)
+        {
+            return true;
+        }
+    }
     return false;
 }
 
@@ -184,68 +191,67 @@ int main()
     display(hint); 
     std::cout << std::endl;
     
-
     bool canGuess = true;
-    
+    std::vector<char> guessedLetters = {};
+    std::vector<char> displayLetters = {};
+
     while (!endGame(gameWin, lives))
     {
         
         
         char letterGuess;
-        std::vector<char> guessedLetters = std::vector<char>(26, '+');
         //std::cout << theWord <<std::endl;
         tempHint = hint;
         std::cout << "Already Guessed:\n";
+        display(displayLetters);
         display(guessedLetters);
         std::cout << std::endl;
         std::cout << "Guess a letter:\n> ";
         std::cin >> letterGuess;
 
-
-        if (!alreadyGuessed(letterGuess, guessedLetters))
+        if (letterGuess == '0' && canGuess == true)
         {
-            if (letterGuess == '0' && canGuess == true)
-            {
-                std::string guess;
-                std::cout << "What do you think the word is?\n> ";
-                std::cin >> guess;
-                if (guess == theWord)
-                {
-                    gameWin = true;
-                }
-                canGuess = false;
-            
-            } else if (letterGuess == '0' && canGuess == false)
-            {
-                std::cout << "You must guess a letter before you can guess the word again\n";
-            } else if (alreadyGuessed(letterGuess, guessedLetters))
-            {
-                std::cout << "You have already guessed this letter, try another.\n";
-            } else 
-            {
-                hint = getHint(wordButList, letterGuess, hint);
-                canGuess = true;
-                if (tempHint == hint)
-                {
-                    lives = lives - 1;
-                }
-            }
-            if (wordButList == hint)
+            std::string guess;
+            std::cout << "What do you think the word is?\n> ";
+            std::cin >> guess;
+            if (guess == theWord)
             {
                 gameWin = true;
+                continue;
             }
-            if (gameWin == true && (hint != wordButList))
+            canGuess = false;
+            std::cout << "Sorry, that's incorrect.\n";
+        } else if (letterGuess == '0' && canGuess == false)
+        {
+            std::cout << "You must guess a letter before you can guess the word again.\n";
+        } else if (alreadyGuessed(letterGuess, guessedLetters))
+        {
+            std::cout << "You have already guessed this letter, try another.\n";
+        } else 
+        {
+            hint = getHint(wordButList, letterGuess, hint);
+            canGuess = true;
+            if (tempHint == hint)
             {
-                hint = wordButList;
+                lives = lives - 1;
+                append(displayLetters, letterGuess);
             }
-            std::cout << "\n\n\n\n\n";
-            hangman(lives);
-            std::cout << std::endl;
-            display(hint); 
-            std::cout << std::endl;
-
+            append(guessedLetters, letterGuess);
         }
+        if (wordButList == hint)
+        {
+                gameWin = true;
+        }
+        if (gameWin == true && (hint != wordButList))
+        {
+            hint = wordButList;
+        }
+        hangman(lives);
+        std::cout << std::endl;
+        display(hint); 
+        std::cout << std::endl;     
     }    
+        
     if (lives == 0)
     {
         std::cout << "Sorry, you lost!\nThe word was '" << theWord <<  "'.\n";
@@ -254,10 +260,10 @@ int main()
         std::cout << "Cheater\n";
     } else if (lives == 1)
     {
-        std::cout << "Congrats, you won!\n You had 1 life left!\n";
+        std::cout << "Congrats, you won!\nYou had 1 life left!\n";
     } else
     {
-        std::cout << "Congrats, you won!\n You had " << lives << " lives left!\n";
+        std::cout << "Congrats, you won!\nYou had " << lives << " lives left!\n";
     }
 
     return 0;
