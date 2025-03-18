@@ -32,7 +32,46 @@ std::vector<std::string> wordList = {
     "kangaroo",
     "horrible",
     "animals",
-    "supercalifragilisticexpialidocious"
+    "apple",
+    "bravery",
+    "circuit",
+    "delight",
+    "energy",
+    "famous",
+    "glance",
+    "horizon",
+    "jacket",
+    "knight",
+    "laughter",
+    "mango",
+    "noble",
+    "orange",
+    "puzzle",
+    "quaint",
+    "rocket",
+    "signal",
+    "turtle",
+    "unique",
+    "abominable",
+    "afterthought",
+    "accountable",
+    "revolutionary",
+    "masterpiece",
+    "transcendent",
+    "complicated",
+    "phenomenal",
+    "destination",
+    "celebration",
+    "imagination",
+    "understandable",
+    "consequence",
+    "accommodation",
+    "determination",
+    "unbelievable",
+    "contemplation",
+    "extraordinary",
+    "discovery",
+    "appreciation"
 };
 
 std::vector<char> getHint(std::vector<char> wordList, char letter, std::vector<char> hint)
@@ -216,7 +255,6 @@ int main()
             if (guess == theWord)
             {
                 gameWin = true;
-                continue;
             }
             canGuess = false;
             std::cout << "Sorry, that's incorrect.\n";
