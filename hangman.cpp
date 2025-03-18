@@ -211,7 +211,7 @@ bool alreadyGuessed(char guess, std::vector<char> letters)
 
 int main()
 {
-    std::cout << "Welcome to Hangman!\n(To guess the entire word, input 0)\n";
+    std::cout << "Welcome to Hangman!\nTo guess an entire word, input 0.\nIf you would like to exit at any time, enter 9.\n";
     bool playAgain = true;
     while (playAgain)
     {
@@ -232,7 +232,7 @@ int main()
         std::cout << std::endl;
         display(hint); 
         std::cout << std::endl;
-        
+        bool broke = false;
         bool canGuess = true;
         std::vector<char> guessedLetters = {};
         std::vector<char> displayLetters = {};
@@ -249,7 +249,11 @@ int main()
             std::cout << std::endl;
             std::cout << "Guess a letter:\n> ";
             std::cin >> letterGuess;
-
+            if (letterGuess == '9')
+            {
+                std::cout << "\nThank you for playing!\n";
+                return 0;
+            }
             if (letterGuess == '0' && canGuess == true)
             {
                 std::string guess;
