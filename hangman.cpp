@@ -295,9 +295,6 @@ int main()
         if (lives == 0)
         {
             std::cout << "Sorry, you lost!\nThe word was '" << theWord <<  "'.\n";
-        } else if (lives == 6)
-        {
-            std::cout << "Cheater\n";
         } else if (lives == 1)
         {
             std::cout << "Congrats, you won!\nYou had 1 life left!\n";
