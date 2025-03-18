@@ -211,97 +211,116 @@ bool alreadyGuessed(char guess, std::vector<char> letters)
 
 int main()
 {
-
-    srand(time(0));
-    std::string theWord = wordList[rand() % length(wordList)];
-    std::vector<char> hint = std::vector<char>(theWord.length(), '_');
-    std::vector<char> tempHint = hint;
-    int lives = 6;
-    bool gameWin = false;
-    std::vector<char> wordButList;
-    for (char c : theWord)
-    {
-        wordButList.push_back(c);
-    }
-
     std::cout << "Welcome to Hangman!\n(To guess the entire word, input 0)\n";
-    hangman(lives);
-    std::cout << std::endl;
-    display(hint); 
-    std::cout << std::endl;
-    
-    bool canGuess = true;
-    std::vector<char> guessedLetters = {};
-    std::vector<char> displayLetters = {};
-
-    while (!endGame(gameWin, lives))
+    bool playAgain = true;
+    while (playAgain)
     {
-        
-        
-        char letterGuess;
-        //std::cout << theWord <<std::endl;
-        tempHint = hint;
-        std::cout << "Already Guessed:\n";
-        display(displayLetters);
-        std::cout << std::endl;
-        std::cout << "Guess a letter:\n> ";
-        std::cin >> letterGuess;
+        srand(time(0));
+        std::string theWord = wordList[rand() % length(wordList)];
+        std::vector<char> hint = std::vector<char>(theWord.length(), '_');
+        std::vector<char> tempHint = hint;
+        int lives = 6;
+        bool gameWin = false;
+        std::vector<char> wordButList;
+        for (char c : theWord)
+        {
+            wordButList.push_back(c);
+        }
 
-        if (letterGuess == '0' && canGuess == true)
-        {
-            std::string guess;
-            std::cout << "What do you think the word is?\n> ";
-            std::cin >> guess;
-            if (guess == theWord)
-            {
-                gameWin = true;
-            }
-            canGuess = false;
-            std::cout << "Sorry, that's incorrect.\n";
-        } else if (letterGuess == '0' && canGuess == false)
-        {
-            std::cout << "You must guess a letter before you can guess the word again.\n";
-        } else if (alreadyGuessed(letterGuess, guessedLetters))
-        {
-            std::cout << "You have already guessed this letter, try another.\n";
-        } else 
-        {
-            hint = getHint(wordButList, letterGuess, hint);
-            canGuess = true;
-            if (tempHint == hint)
-            {
-                lives = lives - 1;
-                append(displayLetters, letterGuess);
-            }
-            append(guessedLetters, letterGuess);
-        }
-        if (wordButList == hint)
-        {
-                gameWin = true;
-        }
-        if (gameWin == true && (hint != wordButList))
-        {
-            hint = wordButList;
-        }
+
         hangman(lives);
         std::cout << std::endl;
         display(hint); 
-        std::cout << std::endl;     
-    }    
+        std::cout << std::endl;
         
-    if (lives == 0)
-    {
-        std::cout << "Sorry, you lost!\nThe word was '" << theWord <<  "'.\n";
-    } else if (lives == 6)
-    {
-        std::cout << "Cheater\n";
-    } else if (lives == 1)
-    {
-        std::cout << "Congrats, you won!\nYou had 1 life left!\n";
-    } else
-    {
-        std::cout << "Congrats, you won!\nYou had " << lives << " lives left!\n";
-    }
+        bool canGuess = true;
+        std::vector<char> guessedLetters = {};
+        std::vector<char> displayLetters = {};
 
+        while (!endGame(gameWin, lives))
+        {
+            
+            
+            char letterGuess;
+            //std::cout << theWord <<std::endl;
+            tempHint = hint;
+            std::cout << "Already Guessed:\n";
+            display(displayLetters);
+            std::cout << std::endl;
+            std::cout << "Guess a letter:\n> ";
+            std::cin >> letterGuess;
+
+            if (letterGuess == '0' && canGuess == true)
+            {
+                std::string guess;
+                std::cout << "What do you think the word is?\n> ";
+                std::cin >> guess;
+                if (guess == theWord)
+                {
+                    gameWin = true;
+                }
+                canGuess = false;
+                std::cout << "Sorry, that's incorrect.\n";
+            } else if (letterGuess == '0' && canGuess == false)
+            {
+                std::cout << "You must guess a letter before you can guess the word again.\n";
+            } else if (alreadyGuessed(letterGuess, guessedLetters))
+            {
+                std::cout << "You have already guessed this letter, try another.\n";
+            } else 
+            {
+                hint = getHint(wordButList, letterGuess, hint);
+                canGuess = true;
+                if (tempHint == hint)
+                {
+                    lives = lives - 1;
+                    append(displayLetters, letterGuess);
+                }
+                append(guessedLetters, letterGuess);
+            }
+            if (wordButList == hint)
+            {
+                    gameWin = true;
+            }
+            if (gameWin == true && (hint != wordButList))
+            {
+                hint = wordButList;
+            }
+            hangman(lives);
+            std::cout << std::endl;
+            display(hint); 
+            std::cout << std::endl;     
+        }    
+            
+        if (lives == 0)
+        {
+            std::cout << "Sorry, you lost!\nThe word was '" << theWord <<  "'.\n";
+        } else if (lives == 6)
+        {
+            std::cout << "Cheater\n";
+        } else if (lives == 1)
+        {
+            std::cout << "Congrats, you won!\nYou had 1 life left!\n";
+        } else
+        {
+            std::cout << "Congrats, you won!\nYou had " << lives << " lives left!\n";
+        }
+
+        std::string yn = "0";
+        std::cout << "Do you want to play again? (y/n)\n> ";
+        while (yn != "y" && yn != "n")
+        {
+            std::cin >> yn;
+            if (yn != "y" && yn != "n")
+            {
+                std::cout << "Please enter a vaild response. Play again? (y/n)\n> ";
+            }
+        }
+        if (yn == "n")
+        {
+            playAgain = false;
+        }
+    }
+    std::cout << "\nThank you for playing!\n";
     return 0;
 }
